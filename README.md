@@ -1,4 +1,203 @@
 # 이동교 202230124
+## 04월 03일 (5주차)
+#### README 파일 편집
+
+### for문
+~~~java
+public class Ex31ForSample {
+    public static void main(String[] args) {
+        int i, sum = 0;
+
+        for(i = 1; i <= 10; i++) {
+            sum +=i;
+            System.out.println(i);
+
+            if (i <= 9)
+                System.out.print("+");
+            else{
+                System.out.println("=");
+                System.out.println(sum);
+
+            }
+        }
+    }
+~~~
+
+### while문
+~~~~java
+import java.util.Scanner;
+
+public class Ex32whilesSample {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int count = 0, n = 0;
+        double sum = 0;
+
+        System.out.println("정수를 입력하고 마지막에 0을 입력하세여.");
+    while ((n = scanner.nextInt()) != 0) {
+        sum = sum + n;
+        count++;
+    }
+    System.out.print("수의 개수는 " + count + "개이며");
+    System.out.println("평균은 " + sum/count + "입니다");
+    }
+}
+~~~~
+
+### do-while문
+~~~java
+public class Ex33DowhilesSample {
+    public static void main(String[] args) {
+        char a = 'a';
+
+        do {
+            System.out.print(a);
+            a = (char) (a + 1);
+        } while (a <= 'z');
+    }
+}
+~~~
+
+### 중첩 방복
+~~~~java
+public class Ex34NestedLoop {
+
+    public static void main(String[] args) {
+        
+        for(int i =1; i < 10; i++){
+            for (int j = 1; j < 10; j++){
+                System.out.print(j + '*' + i +"=" + i * j);
+                System.out.print('\t');
+            }
+            System.out.println();
+        }
+    }
+}
+~~~~
+
+### continue문
+~~~~java
+import java.util.Scanner;
+
+public class Ex35ContinueExample {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("정수를 5개 입력하세요.");
+        int sum = 0;
+
+        for(int i = 0; i < 5; i++){
+            int n = scanner.nextInt();
+            if(n <= 0) continue;
+            else sum +=n;
+        }
+        System.out.println("양수의 합은 " + sum);
+
+        scanner.close();
+    }
+}
+
+~~~~
+### break문
+* 반복문 하나를 즉시 벗어날 떄 사용
+* 중첩 반복의 경우 안쪽 반복문의 break문이 실행 되면 안쪽 반복문만 벗어남.
+
+
+
+~~~~java
+import java.util.Scanner;
+
+public class Ex36BreakExample {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("exit를 입력하면 종료합니다.");
+
+        while (true) {
+            System.out.print(">>");
+            String text = scanner.nextLine();
+            if (text.equals("exit")) {
+                break;
+            }
+            System.out.println("종료합니다");
+            scanner.close();
+        }
+    }
+}
+~~~~
+
+#### 자바 배열 
+* 인덱스와 인덱스에 대응하는 데이터들로 이루어진 자료 구조로 한 번에 많은 메모리 공간 선언
+* 같은 타입의 데이터들이 순차적으로 저장되는 공간으로 인덱스를 이용하여 원소 데이터 접근
+
+### 배열 선언 및 생성 디테일
+* 배열은 선언과 생성의 두 단계 필요 : 선언과 동시에 생성할 수 있음.
+~~~~java
+import java.util.Scanner;
+
+public class Ex37ArrayAccess {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int intArray[];
+        intArray =new int[5];
+        
+        int max = 0;
+        System.out.println("양수 5개를 입역하세요.");
+
+        for (int i = 0; i < 5; i++){
+            intArray[i] = scanner.nextInt();
+            if (intArray[i] > max)
+                max = intArray[i];
+        } 
+        System.out.print("가장 큰 수는 " + max + "입니다.");
+
+        scanner.close();
+        
+    }  
+}
+~~~~
+
+### for-each문
+*  배열이나 나열의 원소를 순차 접근하는데 유용한 for문
+
+### 메소드의 배열 리턴
+* 배열의 레퍼런스만 리턴 되며, 배열 전체가 리턴되는 것이 아님
+#### 메소드의 리턴 타입
+* 리턴하는 배열 타입과 리턴 받는 배열 타입 일치
+* 리턴 타입에 배열의 크기를 지정하지 않음
+
+### 자바의 예외 처리 
+* 자바에서는 실행 중 발생하는 에러를 예외로 처리
+#### 예외 발생 경우
+* 점수를 0으로 나누는 경우
+* 배열의 크기보다 큰 인뎃스로 배열의 원소를 접근하는 경우
+* 정수를 읽는 코드가 실행되고 있을 떄 사용자가 문자를 입력한 경우 
+
+### 예외 발생으로 응용프로그램이 강제 종료되는 경우 
+~~~~java 
+import java.util.Scanner;
+
+public class Ex312DivideByZero {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int dividend;
+        int divisor;
+
+        System.out.print("나뉨수를 입력하시오:");
+        dividend = scanner.nextInt();
+        System.out.print("나눈수를 입력하시오:");
+        divisor = scanner.nextInt();
+        System.out.println(dividend+"를" + divisor + "로 나누면 몫은" + dividend/divisor + "입니다");
+        scanner.close();
+    }
+}
+~~~~
+#### 자바의 예외 처리, try-catch-finally문
+* 예외 처리 : 발생한 예외에 대해 개발자가 작성한 프로그램 코드에서 대응하는 것 
+* try-catch-finally문, finally 블록은 생략 가능
 
 ## 3월 27일 (4주차)
 #### README 파일 편집
@@ -151,6 +350,8 @@ public class prog_1 {
 5. 빠른 연산 : 짝수/홀수 판별
 
 
+
+
 ## 3월 20일 (3주차)
 #### README 파일 편집
 * 절차지향언어 : 프로그램의 흐름을 순차적으로 처리
@@ -175,10 +376,10 @@ public class prog_1 {
 
 API : JDK에 포함된 클래스 라이브러리
 
-#### 자바의 특징 (1)
+### 자바의 특징 (1)
 * 플랫폼 독립성 : 하드웨어 운영 체제에 종속 되지 않는 바이트 코드로 플랫폼 독집성
 *
-#### 자바의 특징 (2)
+### 자바의 특징 (2)
 * 한 개의 class 파일 또는 다수의 class 파일로 구성
 * 여러 폴더에 걸쳐 다수의 클래스 파일로 구성된 경우 : jar 압축 파일로 배포
 
