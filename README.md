@@ -1,4 +1,200 @@
 # 이동교 202230124
+
+## 04월 10일 (6주차)
+#### README 파일 편집
+~~~~java
+import java.util.Scanner;
+
+public class Ex313DivideByZeroHanding {
+
+    public static void main(String[] args) {
+        Scanner Scanner = new Scanner(System.in);
+        int dividend;
+        int divisor;
+
+        System.out.print("나뉨수를 입력하시오:");
+        dividend = scanner.nextInt();
+        System.out.print("나눗수를 입력하시오:");
+        divisor = scanner.nextInt();
+        try {
+            System.out.println(dividend+"를"+ divisor + "로 나누면 몫은 " + dividend/divisor + "닙니다.");
+
+        }
+        catch(ArithmeticException e) {
+            System.out.println("0으로 나눌 수 없습니다");
+        }
+        Scanner.class();
+    }
+}
+~~~~
+
+### 입력 오류시 발생하는 오류
+
+~~~~java
+import java.util.Scanner;
+
+public class Ex313DivideByZeroHanding {
+
+    public static void main(String[] args) {
+        Scanner Scanner = new Scanner(System.in);
+        int dividend;
+        int divisor;
+
+        System.out.print("나뉨수를 입력하시오:");
+        dividend = scanner.nextInt();
+        System.out.print("나눗수를 입력하시오:");
+        divisor = scanner.nextInt();
+        try {
+            System.out.println(dividend+"를"+ divisor + "로 나누면 몫은 " + dividend/divisor + "닙니다.");
+
+        }
+        catch(ArithmeticException e) {
+            System.out.println("0으로 나눌 수 없습니다");
+        }
+        Scanner.class();
+    }
+}
+~~~~
+### 자바의 객체 지향 특성 : 상속
+* 상속 : 상위 객체의 속성이 하위 객체에 물려 줌
+*  하위 객체가 상위 객체의 속성을 모두 가지는 관계
+
+### 자바의 상속
+*   상위 클래스 : 수퍼 클래스
+*  하위 클래스 : 서브 클래스, 수퍼 클래스 코드의 재사용, 새로운 특성 추가 가능
+
+### 자바의 객체 지향 특성 : 다향성
+*  다향성 : 같은 이름의 메소드가 클래스 혹은 객체에 따하 다르게 구현되는 것
+*  메소드 오버로딩 : 한 클래스 내에서 같은 이름이지만 다르게 작동하는 여러 메소드
+*  메소드 오버라이딩 : 슈퍼 클래스의 메소드를 동일한 이름으로 서브 클래스마다 다르게 구현 
+
+### 객체 지향 언어의 목적
+1. 소프츠웨어의 생산성 향상
+*  소프트웨어를 빠른 속도로 생산할 필요성 증대
+
+#### 객체 지향 언어
+*  상솓, 다향성, 객체, 캡슐화 등 소프츠웨어 재사용을 위한 여러 장치 내장
+*  소프트웨어 재사용과 부분 수정 빠름
+*  소프트웨어를 다시 만드는 부담 대폭 줄임
+* 소프트웨어 생산성 향상
+
+2. 실세계에 대한 쉬운 모델링 
+*  초기 프로그래밍
+*  수학 계산/통계 처리를 하는 등 처리 과정,계산 절차 중요
+
+### 절차 지향 프로그래밍과 객체 지향 프로그래밍
+#### 절차 지향 프로그래밍
+* 작업 순서를 표현하는 컴퓨터 명령 집합
+* 합수들의 집합으로 프로그램 작성
+
+#### 객체 지향 프로그래밍
+* 컴퓨터가 수행 하는 작업을 객체들 간의 상호 작용으로 표현
+* 클래스 혹은 객체들의 집합으로 프로그램 작성
+
+### 클래스와 객체
+#### 클래스 
+* 객체의 속성과 행위 선언, 객체의 설계도 혹은 틀
+
+#### 객체
+* 클래스의 틀로 찍어낸 실체
+* 프로그램 실행 중에 생성되는 실체
+* 메모리 공간을 갖는 구체적인 실체
+* 인스턴스라고도 부름
+
+### 자바 클레스 구성
+* 클래스 
+* 맴버 : 클래스 구성 요소, 필드(멤버 변수)와 메소드(멤버 함수)
+* 클래스에 대한 public 접근 지정 : 다른 모든 클래스에서 클래스 사용 허락
+* 멤버에 대한 public 접근 지정 : 다른 모든 클래스에게 맴버 접근 허용 
+
+### circle 클래스의 객체 생성 및 활용 
+~~~~java
+public class Ex41Circle {
+    int radius;
+    String name;
+
+    public double getArea() {
+        return 3.14 * radius * radius;
+    }
+
+public static void main(String[] args) {
+    Ex41Circle pizza;
+    pizza = new Ex41Circle();
+    pizza.radius = 10;
+    pizza.name = "자바피자";
+    double area = pizza.getArea();
+    System.out.println(pizza.name + "의 면적은 " + area);
+
+    Ex41Circle donut = new Ex41Circle();
+    donut.radius = 2;
+    donut.name = "자바도넛";
+    area = donut.getArea();
+    System.out.println(donut.name + "의 면적은 " + area);
+    }   
+}
+~~~~
+
+### 객체 생성과 활용 
+1. 래퍼런스 변수 선언 
+* Circle pizza
+
+2. 객체 생성
+* new 연산자 이용 
+* pizza = new Circle();
+
+3. 객체 맴버 접근
+* 점(.) 연산자 이용
+* pizza.radius = 10;
+* area = pizza.getArea();
+
+#### 생성자 개념과 목적
+#### 생성자 
+* 객체가 생성될 때 초기화 목적으로 실행되는 메소드
+* 객체가 생성되는 순간에 자동 호출
+
+~~~~java
+public class Ex43Circle {
+    int radius;
+    String name;
+
+    public Ex43Circle() {
+        radius = 1;
+        name = "";
+    }
+
+    public Ex43Circle (int r, String n){
+        radius = r;
+        name = n;
+    }
+    public double getArea(){
+        return 3.14 * radius * radius;
+    }
+
+    public static void main(String[] args) {
+        Ex43Circle pizza = new Ex43Circle(10,"자바피자");
+        double area = pizza.getArea();
+        System.out.println(pizza.name + "의 면적은 " + area );
+
+
+        Ex43Circle donut = new Ex43Circle();
+        donut.name = "도넛피자";
+        area = donut.getArea();
+        System.out.println(donut.name + "의 면적은 " + area);
+    }
+}
+~~~~
+
+### 생성자의 특징
+* 생성자 이름은 클래스 이름과 동일
+* 생성자는 여러 개 작성 가능(생정자 중복)
+
+#### 셍성지는 객체 생성시 한 번만 호출
+* 자바에서 객체 생성은 반드시 new 연산자로 함
+
+* 생성자의 목적은 객체 생성 시 초기화
+* 생성자는 리턴 타입을 지정할 수 없음
+
+
 ## 04월 03일 (5주차)
 #### README 파일 편집
 
@@ -386,7 +582,6 @@ API : JDK에 포함된 클래스 라이브러리
 * 패키지 : 서로 관련 있는 여러 클래스를 패키지로 묶어 관라(폴더 개념)
 
 * 자바는 운영체제의 도움 없이 자체적으로 멀티스레드 지원
-
 
 
 ## 3월 13일 (2주차)
