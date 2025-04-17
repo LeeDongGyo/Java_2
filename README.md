@@ -1,4 +1,297 @@
 # 이동교 202230124
+## 04월 17일 (7주차)
+#### README 파일 편집
+
+### 기본 생성자 : 매개 변수 없고, 아무 작업 없이 단순 리턴하는 생성자
+~~~~java
+class Circle {
+    public Circle() { } //기본생성자
+}
+~~~~
+### 기본 생성자가 자동 생성되는 경우
+* 클래스에 생성자가 하나도 선언되어 있지 않을 때
+* 컴파일러에 의해 기본 생성자 자동 생성 
+
+### 생성자의 종류
+* 기본 생성자가 자동 생성되지 않는 경우
+* 클래스에 생성자가 선언되어 있는 경우
+* 컴파일러는 기본 생성자를 자동 생성해 주지 않는다
+
+### this 래퍼런스
+* 객체 자신에 대한 레퍼런스
+* 컴파일러에 의해 자동 관리, 개발자는 사용하기만 하면 됨
+* this.멤버 형태로 멤버를 접근할 떄 사용
+
+### this()로 다른 생성자 호출
+* 같은 클래스의 다른 생성자 호출
+* 생성자 내에서만 사용 사능
+* 셍성자 코드의 제일 앞에 있어야 함
+* this() 사용 실패 사례
+
+### 객체 배열 
+* 객체에 대한 레퍼런스 배열
+* 자바의 객체 배열 만들기 3 단계
+1. 배열 레퍼런스 변수 선언
+2. 레퍼런스 배열 생성
+3. 배열의 각 원소 객체 생성
+
+### Circle 배열 만들기
+~~~~java
+class Circle {
+    int radius;
+
+
+    public Circle(int radius){
+        this.radius = radius;
+    }
+    public double getArea() {
+        return 3.14 * radius * radius;
+    }
+
+}
+
+public class Ex46CircleArray {
+    public static void main(String[] args) {
+        Circle[] c;
+        c = new Circle[5];
+
+        for (int i = 0; i < c.length; i++)
+        c[i] = new Circle(i);
+
+        for (int i = 0; i < c.length; i++)
+            System.out.print((int) (c[i].getArea()) + " ");
+    }
+
+
+
+}
+~~~~
+
+~~~~java
+import java.util.Scanner;
+
+class Book {
+    String title,author;
+    public Book(String title, String author){
+        this.title = title;
+        this.author = author;
+    }
+}
+
+public class Ex47BookArray {
+    public static void main(String[] args) {
+        Book [] book = new Book[2]; // Book 배열 선언
+
+        Scanner scanner = new Scanner(System.in);
+        for(int i = 0; i < book.length; i++) {
+            System.out.println("제목>>");
+            String title = scanner.nextLine();
+            System.out.println("저자>>");
+            String author = scanner.nextLine();
+            book[i] = new Book(title, author); //배열 원소 객체 생성
+        }
+            for(int i = 0; i < book.length; i++)
+                System.out.print("(" + book[i].title + ", " + book[i].author + ")");
+            scanner.close();
+    }
+ }
+~~~~
+
+
+### 메소드 
+* 메소드는 C/C++의 함수와 동일 
+* 자바의 모든 메소드는 반드시 클래스 안에 있어야 함(캡슐화 원칙)
+* 메소드 형식
+
+#### 접근 지정자 : 다른 클래스에서 메소드를 접근할 수 있는지 여부 선언
+* public , private, pritected, 디폴트(접근 지정자 생략)
+#### 리턴 타입 : 메소드가 리턴하는 값의 데이터 타입
+
+### 인자 전달 - 기본 타입의 값이 전달되는 경우
+* 매개 변수가 byte, int, double 등 기본 타입으로 선언되었을 때 
+* -> 호춯자가 건네는 값이 매개 변수에 복사되어 전달. 실 인자 값은 변경되지 않음
+
+### 인자 전달 - 객체가 전달되는 경우
+* 객체의 래퍼런스만 전달 : 매개 변수가 실 인자 객체 공유 
+
+### 인자 전달 - 배열이 전달되는 경우
+* 배열 레퍼런스만 매게 변수에 전달 : 배열 통째로 전달되지 않음
+* 객체가 전달되는 경우 동일 : 매개 변수가 실인자의 배열 공유
+
+
+
+### 메소드 오버로딩 
+* 한 클래스 내에서 두 개 이상의 이름이 같은 메소드 작성
+* 메소드 이름이 동일해야 함
+* 매개 변수의 개수 혹은 타입이 달라야 함
+* 리턴 타입은 오버로딩과 관련 없음
+
+### 오버로딩 살패 사례
+* 매개 변수의 개수와 타입이 같기 때문에 오버로딩 실패
+
+### 인자로 배열이 전달되는 얘
+~~~~java
+public class Ex48Arrayparameter {
+    static void replaceSpace(char a[]) {
+        for (int i = 0; i < a.length; i++)
+        if (a[i] == ' ')
+            a[i] = ',';
+    }
+
+    static void printCharArray(char a[]){
+        for (int i = 0; i < a.length; i++)
+            System.out.print(a[i]);
+        System.out.println();
+    }   
+
+    public static void main(String[] args) {
+        char c[] = {'T','h','i','s',' ','i','s',' '
+                        ,'a',' ','p','e','n','c','i','l','.'};
+        printCharArray(c);
+        replaceSpace(c);
+        printCharArray(c);                
+    }
+}
+~~~~
+
+
+### 객체 치환 시 주의할 점
+* 객체 치환은 객체 복사가 아니며, 래퍼런스의 복사이다.
+
+### 객체 소멸
+* new로 할당 받은 객체와 메모리를 JVM으로 되돌려 주는 행위
+* 자바는 객체 소멸 연산자 없음
+* 객체 소멸은 JVM의 고유한 역할
+
+* C/C++에서는 할당 받은 객체를 개발자가 프로그램 내에서 삭제해야 함
+* C/C++의 프로그램 작성을 어렵게 만드는 요인
+* 자바에서는 사용하지 않는 객체나 배열을 돌려주는 코딩 책임으로부터 개발자 해방
+
+### 기비지 
+* 가리키는 래퍼런스가 하나도 없는 객체
+* 더 이상 접근할 수 업어 사용할 수 없게 된 메모리
+* 가비지 컬렉션 : 자바 가상 기계의 가비지 컬렉터가 자동으로 가비지 수집, 반환
+
+### 가비지의 발생 
+~~~~java 
+public class Ex49GarbageEx {
+    public static void main(String[] args) {
+        String a = new String("Good");
+        String b = new String("Bad");
+        String c = new String("Normal");
+        String d,e;
+        a= null;
+        d = c;
+        c = null;
+    }
+}
+~~~~
+
+### 가비지 컬렉션
+* JVM이 가비지 자동 회수
+* 가용 메모리 공간이 일정 이하로 부족해질 떄
+* 가비지를 수거하여 가용 메모리 공간으로 확보
+* 가비지 컬렉터에 의해 자동 수행
+
+* 강제 가비지 컬렉션 강제 수행 : System 또는 Runtime 객체의 gc() 메소드 호출
+~~~~java
+System.gs(); // 가비지 컬렉션 작동 요청
+~~~~
+* 이 코드는 JVM에 강역한 가비지 컬렉션 요청
+* 그러나 JVM이 가비지 컬렉션 시점을 전적으로 판단
+
+자바의 패키지 개념
+#### 패키지
+* 상호 관련 있는 클래스 파일(컴파일된 .class)을 저장하여 관리하는 디렉터리 
+* 자바 응용프로그램은 하나 이상의 패키지로 구성 
+
+### 접근 지정자
+* 자바의 접근 지정자 4가지 : private, protected, public, 디폴트(접근 지정자 생략)
+* 접근 지정자 목격
+* 클래스나 일부 멤버를 공개하여 다른 클래스에서 접근하도록 허용
+* 객체 지향 언어의 캡슐화 정책은 멤버를 보호하는 것
+* -> 접근 지정은 캡슐화 묶인 보호를 일부 해제할 목적으로 사용
+* 접근 지정자에 따른 클래스나 멤버의 공개 범위
+
+
+### 클래스 접근 지정
+* 다른 클래스에서 사용하도록 허용할 지 지정
+* public 클래스 : 다른 모든 클래스에게 접근 허용
+* 디폴트 클래스(접근 지정자 생략) : 같은 패키지의 클래스에만 접근 허용
+
+### 맴버 접근 지정
+* public 멤버 : 패키지에 관곙 없이 모든 클래스에게 접근 허용
+* private 멤버 : 동일 클래스 내에만 접근 허용 . 상속 받는 서브 클래스에서 접근 불가.
+* portected 멤버 : 
+* 같은 패키지 내의 다른 모든 클래스에게 접근 허용
+* 상속 받은 서브 클래스는 다른 패카자에 있어도 접근 가능 
+* 디폴트 멤버 : 같은 패키지 내의 다른 클래스에게 접근 허용 
+
+### static 멤버 
+#### static 멤버 선언 
+~~~~java
+class StaticSample {
+    int n;          //  non-static 필드
+    void g() {...}  //  non-static 메소드
+    static int m;   //  static 필드
+    static void f() {...} // static 메소드 
+}
+~~~~
+#### 겍체 생성과 non-static 멤버의 생성 
+* non-static 멤버는 객체가 생성될 때,객체마다 생긴다.
+
+* 객체마다 n,g()의 non-static 맴버들이 생긴다.
+* # non-static 모든 객체에 멤버 생성, static은 멤버 공유!
+
+### static 멤버의 생성
+* static 멤버는 클래스당 하나만 생성
+* 객체 등에 의해 공유됨
+
+### static 멤버 사용 
+#### 클래스 이름으로 접근 가능 
+~~~~java
+StaticSample.m = 3;
+StaticSample.f = f();
+~~~~
+#### 객체의 멤버로 접근 가능 
+~~~~java
+StaticSample b1 = new StaticSample();
+b1.m = 3;
+b1.f();
+~~~~
+#### non-static 멤버는 클래스 이름으로 접근 안 됨
+~~~~java
+StaticSample.n = 5;
+StaticSample.g();
+~~~~
+
+### static 활용
+* 전역 변수와 전역 함수를 만들 떄 활용
+* 공유 멤버를 만들 때 : static으로 선언한 멤버는 클래스의 객체들 사이에 공유
+
+### static 멤버를 가진 Calc 클래스 작성
+~~~~java
+class Calc {
+    public static int abs(int a) {return a> 0?a: -a;}
+    public static int max(int a, int b) {return (a>b)?a:b;}
+    public static int min(int a, int b) {return (a>b)? b:a;}
+}
+
+
+
+public class Ex411CalcEx {
+    public static void main(String[] args) {
+        System.out.println(Calc.abs(-5));
+        System.out.println(Calc.max(10, 8));
+        System.out.println(Calc.min(-3, -8));
+    }
+}
+~~~~
+
+### static 메소드의 제약 조건1
+* static 메소드는 오직 static 멤버만 접근 가능
+* 객체가 생성되지 않은 상황에서도 static 메소드는 실행될 수 있기 때문에, non-static 멤버 활용 불가
+*  non-static 메소드는 static 멤버 사용 가능
 
 ## 04월 10일 (6주차)
 #### README 파일 편집
@@ -582,6 +875,7 @@ API : JDK에 포함된 클래스 라이브러리
 * 패키지 : 서로 관련 있는 여러 클래스를 패키지로 묶어 관라(폴더 개념)
 
 * 자바는 운영체제의 도움 없이 자체적으로 멀티스레드 지원
+
 
 
 ## 3월 13일 (2주차)
