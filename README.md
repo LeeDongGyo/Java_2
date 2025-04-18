@@ -1,4 +1,248 @@
 # 이동교 202230124
+## 04월 18일 (8주차)
+#### README 파일 편집
+
+# static 메소드의 제약 조건 2
+* static 메소드는 this 사용불가
+* static 메소드는 객체 앖이도 사용 가능하므로, this 레퍼런스 사용할 수 없음
+
+### final 필드
+* final 필드 : 상수를 선언할 때 사용
+* 상수는 필드 선언 시에 초기 값을 지정하여야한다
+
+* final 클래스와 메소드
+* final 클래스 - 더 이상 클래스 상속 불가능
+* final 메소드 - 더 이상 오버라이딩 불가능
+
+### 상속의 필요성
+* 상속이 없는 경우 중복된 멤버를 가진 4개의 클래스
+
+* 상속을 이용한 경우 중복이 제거되고 간결해진 클래스 구조 
+
+### 클래스 상속과 객체
+* 상속 선언 : exxtends 키워드 사용 
+* 부모 클래스를 물려받아 자식 클래스를 확장한다는 의미
+* 부모 클래스 -> 슈퍼 클래스
+* 자식 클래스 -> 서브 클래스
+
+### 클래스 상속
+~~~~~java
+
+import java.util.ResourceBundle.Control;
+
+public class Ex51ColorPointEx {
+
+    public static void main(String[] args) {
+        Point p = new Point();
+        p.set(1,2);
+        p.showPoint();
+
+        ControlPoint cp = new ColorPoint();
+        cp.set(3,4);
+        cp.setColor("red");
+        cp.showColorPoint();
+
+    }
+}
+
+class Point{
+    private int x,y;
+}
+public void set(int x, int y) {
+    this.x = x;
+    this.y = y;
+}
+
+
+class ColorPoint extends Point {
+    private String color;
+}
+
+public void setColor(String color) {
+    this.color = color;
+}
+
+public void showColorPoint() {
+    System.out.print(color);
+    showPoint();
+}
+~~~~~
+
+### 서브 클래스 객체의 모양
+* 슈퍼 클래스 객체와 서브 클래스의 객체는 별개
+* 서브 클래스 객체는 슈퍼 클래스 멤버 포함
+
+### 자바 상속의 특징
+* 클래스 다중 상속 불허 
+* 하나의 클래스가 둘 이상의 부모 클래스를 동시에 상속받는 것을 말합니다.
+
+* C++는 다중 상속 가능 
+* C++는 다중 상속으로 멤버가 중복 생성되는 문제 있음
+#### 부모 클래스 간에 계층적 관계가 있을 경우, 중복된 멤버가 생성될 수 있습니다.
+#### 모호성 문제 : 두 부모 클래스에 동일한 이름의 멤버가 존재할 경우 어떤 부모의 멤버를 호출해야 할지 모호해집니다.
+
+* 자바는 인터페이스의 다중 상속 허용
+#### 다중 상속과 유사한 기능을 제공
+
+* 모든 자바 클래스는 묵시적으로 object클래스 상속받음
+* java.lang.Object는 클래스 모든 클래스의 슈퍼 클래스 
+
+### 슈터 클래스의 멤버에 대한 서브 클래스의 접근
+* 슈퍼 클래스의 private 멤버 : 서브 클래스에서 접근할 수 없음
+
+* 슈퍼 클래스의 디폴트 멤버 : 서브 클래스가 동일한 패키지에 있을 떄 , 접근 가능
+
+* 슈퍼 클래스의 public 멤버 : 서브 클래스는 항상 접근 가능 
+
+* 슈퍼 클래스의 protected 멤버 : 같은 패키지 내의 모든 클래스 접근 허용 , 패키지 여부와 상관없이 서브 클래스는 접근 가능 
+
+### protected 멤버 
+* protected 멤버에 대한 접근 : 같은 패키지의 모든 클래스에게 허용 
+* 상속되는 서브 클래스가 같은 패키지든 다른 패키지든 상관 없이 허용 
+
+### 서브 클래스 / 슈퍼 클래스의 생성자 호출과 실행
+* 서브 클래스의 객체가 생성될 때 : 슈퍼클래스 생성자와 서브 클래스 생성자 모두 실행
+* 호출 순서 : 서브 클래스의 생성자 먼저 호출 -> 슈퍼 클래스 생성자 호출
+* 실행 순서 : 슈퍼 클래스의 생성자가 먼저 실행 -> 서브 클래스의 생성자 실행
+
+### 서브 클래스와 슈퍼 클래스의 생성자 선택
+* 슈퍼 클래스와 서브 클래스 : 각각 여러 개의 생성자 작성 가능
+* 서브 클래스의 객체가 생성될 때 : 슈퍼 클래스 생성자 1개와 서브 클래스 생성자 1개가 실행
+*서브 클래스의 생성자와 슈퍼 클래스의 생성자가 결정되는 방식
+1. 개발자의 명시적 선택 
+* 서브 클래스 개발자가 슈퍼 클래스의 생성자 명시적 선택
+* super() 키워드를 이용하여 선택
+2. 컴파일러가 기본 생성자 선택
+* 서브 클래스 개발자가 슈퍼 클래스의 생성자를 선택하지 않는 경우
+* 컴파일러가 자동으로 슈퍼 클래스의 기본 생성자 선택
+
+### super() 슈퍼 클래스의 생정자 명시적 선택
+* super() : 서브 클래스에서 명시적으로 슈퍼 클래스의 생성자 선택 호출 
+* 반드시 서브 클래스 생성자 코드의 제일 첫 라인에 와야 함
+
+### super()를 활용한 ColorPoint 작성 
+~~~~java
+class Point1 {
+    private int x, y;
+    public Point1(){
+        this.x = this.y = 0;
+    }
+    public Point1(int x, int y){
+        this.x = x; this.y = y;
+    }
+    public void showPoint() {
+        System.out.println("(" + x + ", "+ y +")");
+    }
+}
+
+class ColorPoint1 extends Point1 {
+    private String color;
+    public ColorPoint1(int x, int y, String color){
+        super(x,y);
+        this.color = color;
+    }
+    public void showColorPoint() {
+        System.out.print(color);
+        showPoint();
+    }
+}
+public class Ex525SuperEx {
+
+    public static void main(String[] args) {
+        ColorPoint1 cp = new ColorPoint1(5, 6, "blue");
+        cp.showColorPoint();
+    }
+}
+~~~~
+
+### 업캐스팅 개념 
+* 하위 클래스의 레퍼런스는 상위 클래스를 가리킬 수 없지만, 상위 클래스의 레퍼런스는 하위 클래스를 가리킬 수 있다는 설명
+
+### 업캐스팅 
+* 생물이 들어가는 박스에 사람이나 코끼리를 넣어도 무방, 모두 생물을 상속 받았기 때문
+#### 업캐스팅 이란? 
+* 서브  클래스의 래퍼런스를 슈퍼 클래스 레퍼런스에 대입
+* 슈퍼 클래스 레퍼런스로 서브 클래스 객체를 가리키게 되는 현상
+### 다운캐스팅 
+* 슈퍼 클래스 레퍼런스 서브 클래스 레퍼런스에 대입
+* 업캐스팅 된 것을 다시 원래대로 되돌리는 것
+* 반드시 명시적 타입 변환 지정  
+
+### 업캐스팅 레퍼헌스로 객체 구별
+* 업캐스팅된 레퍼런스로는 객체의 실제 타입을 구분하기 어려움
+* 슈퍼 클래스는 여러 서브 클래스에 상속되기 떄문
+
+### instanceof 연산자 사용 
+* 레퍼전스가 가리키는 객체의 타입 시별 : 연산의 결과는 true/false의 불린 값으로 반환 
+
+### 메소드 오버라이딩의 개념 
+*서브 클래스에서 슈퍼 클래스의 메소드 중복 작성
+* 슈퍼 클래스의 메소드 무력화, 항상 서브 클래스에 오버라이딩한 메소드가 실행되도록 보장됨 
+* '메소드 무시하기'로 번역되기도 함 
+#### 오버라이딩 조건
+* 슈퍼 클래스 메소드의 원형 동일하게 작성
+
+### 오버라이딩의 목적, 다형성 실현
+* 오버라이딩으로 다형성 실현
+* 하나의 인터페이스에 서로 다른 구현 
+* 슈퍼 클래스의 메소드를 서브 클래스에서 각각 목적에 맞게 다르게 구현 
+
+### 메소드 오버라이딩으로 다형성 실현 
+~~~~java
+class Shape {
+    public void draw() {
+        System.out.println(("Shape"));
+    }
+}
+
+class Line extends Shape {
+    public void draw() {
+        System.out.println("Line");
+    }
+}
+
+class Rect extends Shape {
+    public void draw() {
+        System.out.println("Rect");
+    }
+}
+
+class Circle extends Shape {
+    public void draw() {
+        System.out.println("Circle");
+    }
+}
+
+public class Ex54MethodOverridingEx {
+    static void paint(Shape p){
+        p.draw();
+    }
+
+    public static void main(String[] args) {
+        Line line = new Line();
+        paint(line);
+
+        paint(new Shape());
+        paint(new Line());
+        paint(new Rect());
+        paint(new Circle());
+    }
+}
+~~~~
+
+### 동적 바인딩 - 오버라이딩된 메소드 호출
+* SuperObject 하나만 있는 응용프로그램의 경우 혹은 상속받은 경우 모두 동적 바인딩을 한다.
+* 오버라이딩 메소드가 항상 호출된다.
+* SuperObject는 키워드가 아니다.
+
+### super 키워드로 슈퍼 클래스의 멤버 접근 
+* 슈퍼 클래스의 멤버를 접근할 때 사용되는 레퍼런스 super.슈퍼클래스의 멤버
+* 서브 클래스에서만 사용
+* 슈퍼클래스의 필드 접근 
+* 슈퍼 클래스의 메소드 호풀 시 super로 이루어지는 메소드 호출 : 정적 바인딩 
+
+
+
 ## 04월 17일 (7주차)
 #### README 파일 편집
 
@@ -292,6 +536,7 @@ public class Ex411CalcEx {
 * static 메소드는 오직 static 멤버만 접근 가능
 * 객체가 생성되지 않은 상황에서도 static 메소드는 실행될 수 있기 때문에, non-static 멤버 활용 불가
 *  non-static 메소드는 static 멤버 사용 가능
+
 
 ## 04월 10일 (6주차)
 #### README 파일 편집
