@@ -1,4 +1,200 @@
 # 이동교 202230124
+## 05월 015일 (10주차) -> 여기서부터 기말
+#### README 파일 편집
+
+### 모듈 개념
+* JVA 9에서 도입된 개념
+* 패키지와 이미지등의 리소스를 담은 컨테이너
+* 모듈 파일(.jmod)로 저장 
+
+### 자바 플랫폼의 모듈화
+#### 자바 플랫폼 자바의 개발 환경(JDK)과 자바의 실행 환경(JRE)을 지칭. JAVA SE(자바 API)포함.
+* 자바 API의 모든 클래스가 여러 개의 모듈로 재구성됨
+* 모듈 파일은 JDK의 jmods 디렉터링 저장하여 배포
+
+### 자바 모듈화의 목적 
+* 자바 컴포넌트들을 필요에 따라 조립하여 사용하기 위함
+* 컴퓨터 시스템의 불필여한 부담 감소
+* 세밀한 모듈화를 통해 필요 업는 모듈이 로드되지 않게 함 
+* 소형 IoT 장치에도 자바 응용프로그램이 실행되고 성능을 유지하게 함
+
+### JDK의 주요 패키지
+* java.lang 
+* 스트링, 수학 함수, 입출력 등 자바 프로그래밍에 필요한 기본적인 클래스와 인터페이스
+* 자동으로 import 문 필요 없음
+ 
+* java.util
+* 날짜, 시간, 백터, 해시맵 등과 같은 다양한 유틸리티 클래스와 인터페이스 제공
+
+* java.Io
+* 키보드, 모니터, 프린트, 디스크 등에 입출력을 할 수 있는 클래스와 인터페이스 제공
+
+* java.awt 
+* GUI 프로그램을 작성하기 위한 AWT 패키지
+
+* javas.swing 
+* GUI 프로그래밍 작성하기 위한 스윙 패키지
+
+### Object 클래스
+* 모든 자바 클래스는 반드시 Object를 상속받도록 자동 컴파일
+* 모든 클래스의 수퍼 클래스
+* 모든 클래스가 상속받는 공통 메소드 포함 
+
+### 객체 속성 
+* Object 클래스는 객체의 속성을 나타내는 메소드 제공
+
+* hashCode() 메소드 
+* 객체의 해시코드 값을 리턴하며, 객체마다 다름
+
+#### getClass() 메소드
+* 객체의 클래스 정보를 담은 Class 객체 리턴
+* Class 객체의 getName() 메소드는 객체의 클래스 이름 리턴
+
+#### toString() 메소드
+* 객체를 문자열로 리턴
+
+
+### Object 클래스로 객체 속성 알아내기
+~~~~java
+class Point {
+    private int x, y;
+    public Point(int x, int y){
+        this.x = x; this.y = y;
+    }
+}
+
+public class Ex610bectPropertyEx {
+
+    public static void main(String[] args) {
+        Point p = new Point(2, 3);
+        System.out.println(p.getClass().getName());
+        System.out.println(p.hashCode());
+        System.out.println(p.toString());
+    }
+}
+~~~~
+
+### otString() 메소드, 객체를 문자열로 변환
+* 각 클래스는 toString()을 오버라이딩하여 자신만의 문자열 리턴 가능 
+* 객체를 문자열로 반환
+* 원형 : public toString();
+
+### 컴파일에 의한 toString() 자동 변환
+* 객체 + 문자열 -> 객체.toString + 문자열로자동 변환
+* 객체를 단독으로 사용 하는 경우 -> 객체toString() 으로 자동 변환
+
+~~~~java
+class Point2 {
+    private int x,y;
+    public Point2 (int x , int y ){
+        this.x = x; this.y = y;
+    }
+      
+    public String toString(){
+        return "Point("+ x + "," + y +")";
+    }
+}
+
+
+public class Ex62ToStringEx {
+    
+    public static void main(String[] args) {
+        Point2 a = new Point2(2,3);
+        System.out.println(a.toString());  
+        System.out.println(a);  
+    }
+}
+~~~~
+
+### 객체 비교(==)와 equals() 메소드
+* == 연산자 : 객체 래퍼런스 비교
+
+boolean equals(object obj)
+* 두객체의 내용물 비교
+* 객체의 내용물을 비교하기 위해 클래그의 멤버로 작성
+
+~~~~java
+class Point {
+     int x, y;
+    public Point3(int x, int y){
+        this.x = x; this.y = y;
+    }
+}
+
+public bloolean equls(Object ob){
+    point3 p = (Point3ob)
+    if (o =.x && y p.y)return
+    else return false;
+}
+public class Ex63EqulsEx {
+
+    public static void main(String[] args) {
+        Point3 a = new Point3(2, 3);
+        Point3 b = new Point3(2, 3);
+        Point3 c = new Point3(3, 4);
+        if( a == b) System.out.println("a == b")
+        if(a.equls(b)) System.out.println("a is equls to b")
+        if(a.equls(c)) System.out.println("a is equls to c")
+    }
+}
+~~~~
+
+### Wrapper 클래스
+* Wrapper 클래스 : 자바의 기본 타입을 클래스화 한 8개 클래스 통칭
+* 용도 : 객체만 사용할 수 있는 컬렉션 등에 기본 타입의 값을 사용하기 위해 Wrapper 객체로 만들어 사용 
+
+### 박싱과 언박싱
+* 박싱 : 기본 타입의 값을 Wrapper 객체 변환하는 것
+* 언박싱 : Wrapper 객체에 들어 있는 기본 타입의 값을 뺴내는 것. 박싱의 반대.
+
+* 자동 박싱과 자동 언박싱 : JDK 1.5부터 박싱과 언박싱은 자동으로 이루어지도록 컴파일됨 
+
+### String의 생성과 특징
+* String 클래스는 문자열을 나타냄
+* 스트링 리터럴(문자열 리터럴)은 String 객체로 처리됨
+* 스트링 객제의 생성 사례
+~~~~java
+String str1 = "abcd";
+
+char data[] = {'a','b','c','d'};
+String2 = new String(data);
+String3 = new String("abcd");
+~~~~
+
+### 스트링 리터럴과 new Sting()
+#### 스트링 리터럴 
+* 자바 가상 기계 내부에서 리터럴 테이블에 저장되고 관리됨
+* 응용프로그램에서 공유됨
+* 스트링 리터럴 사례 : Strig s = "Hello";
+
+#### new String()으로 생성된 스트링
+* 스트링 객체는 힙에 생성
+* 스트링은 공유되지 않음 
+
+### 스트링 객체의 주요 특징
+#### 스트링 객체는 수정 불가능 
+* 리터럴 스트링이든 new String()을 생성했든 객체의 문자열 수정 불가능 
+
+* 스트링 비교 : 두 스트링을 비교할 떄 반드시 equals()를 사용하여야 함 -> equals()는 내용을 비교하기 떄문 
+
+### String 활용
+#### 스트링 비교,equals와 compareTo()
+* 스트링 비교에 == 연산자 절대 사용 금지
+* equals() : 스트링이 같으면 true, 아니면 false 리턴
+~~~~java
+String java = "Java";
+if(java.equals("Java"))
+~~~~
+#### int compareTo(String anotherString)
+* 문자열이 같으면 0 리턴
+* 이 문자열이 anotherString 보다 먼저 나오면 음수 리턴
+* 이 문자열이 anotherString 보다 나중에 나오면 양수 리턴
+
+### String 활용
+* 공백 제거, String trim()
+* 키보드나 파일로부터 스트링을 입력 시, 스트링 앞 뒤 공백이 끼는 경우가 많다 
+* trim()을 이용하면 스트링 앞 뒤에 있는 공백 제거
+
 
 ## 05월 08일 (9주차) -> 여기서부터 기말
 #### README 파일 편집
