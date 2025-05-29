@@ -1,4 +1,544 @@
 # 이동교 202230124
+
+## 05월 29일 (12주차) 
+#### README 파일 편집
+
+### 컨테이너와 컴포넌트
+#### 컨테이너
+* 다른 컴포넌트를 포함 할 수 있는 GUI 컴포넌트 : java.awt.Container를 상속받음
+* AWT 컨테이너 :  Panel, Frame, Applet, Dialog, JWindow
+* Swing 컨테이너 : JPanel JFrame, JApplet, JDialog, JWindow 
+
+#### 컴포넌트 
+* 컨테이너에 포함되어야 화면에 출력될 수 있는 GUI 객체
+* 다른 컴포넌트를 포함할 수 없는 순수 컴포넌트
+* 모든 GUI 컴포넌트가 상속받는 클래스 : java.awt.Component
+* 스윙 컴포넌트가 상속받는 클래스 : javax.swing.Jcomponent
+
+#### 최상위 컨테이너 
+* 다른 컨테이너에 포함되지 않고도 화면에 출력되며, 독립적으로 존재 가능한 컨테이너
+* 스스로 화면에 자신을 출력하는 컨테이너 : JFrame, JApplet, JDialog
+
+### Swing GUI 프로그램 만들기 
+#### 스윙 GUI 프로스램 만드는 과정
+1. 스윙 프레임 만들기
+2. main() 메소드 작성
+3. 스윙 프레임에 스윙 컴포넌트 붙이기 
+
+### Swing 프레임 
+#### 스윙 프레임: 모든 스윙 컴포넌트를 담는 최상위 컨테이너
+* JFrame을 상속받아 구현
+* 컴포넌트들은 화면에 보이려면 스윙 프레임에 부착되어야 함
+* 프레임을 닫으면 프레임에 부착된 모든 컴포넌트가 보이지 않게 됨
+
+#### 스윙 프레임(JFrame) 기본 구성
+* 프레임: 스윙 프로그램의 기본 틀
+* 메뉴바: 메뉴들이 부착되는 공간
+* 컨텐트팬: GUI 컴포넌트들이 부착되는 공간
+
+### 프레임 만들기, JFrame 클래스 상속
+#### 스윙 프레임
+* JFrame 클래스를 상속받은 클래스 작성
+* 프레임의 크기 반드시 지정 : setSize() 호출
+* 프레임을 화면에 출력하는 코드 반드시 필요 : setVisible(true) 호출
+
+#### 300x300 크기의 스윙 프레임 만들기 
+~~~~ java
+import javax.swing.JFrame;
+
+public class Ex81MyFrame extends JFrame {
+    public Ex81MyFrame() {
+        setTitle("300x300 스윙 프레임 만들기"); // 타이틀 설정
+        setSize(300, 300); // 프레임 크기 300x300
+        setVisible(true); // 프레임 출력
+    }
+
+    public static void main(String[] args) {
+        Ex81MyFrame frame = new Ex81MyFrame();
+    }
+}
+~~~~
+
+### Swing 응용프로그램에서 main()의 기능과 위치
+#### 스윙 응용프로그램에서 main()의 기능 최소화 바람직
+* 스윙 응용프로그램이 실행되는 시작점으로서의 기능만
+* 스윙 프레임을 생성하는 정도의 코드로 최소화
+~~~~java
+public static void main(String [] args) {
+    MyFrame frame = new MyFrame(); // 스윙 프레임 생성
+}
+~~~~
+* frame 객체를 생성하고 사용하지 않기 때문에 worrying이 발생합니다.
+* 실무에서는 다음과 같이 코딩하는 것이 일반적입니다.
+
+#### 프레임에 컴포넌트 붙이기
+#### 타이틀 달기
+* super()나 setTitle() 이용
+~~~~java
+MyFrame() { // 생성자
+super("타이틀문자열");
+}
+
+MyFrame() { // 생성자
+setTitle("타이틀문자열");
+}
+~~~~
+#### 컨텐트팬에 컴포넌트 달기
+* 컨텐트팬이란? 스윙 컴포넌트들이 부착되는 공간
+* 컨텐트팬 알아내기 - 스윙 프레임에 붙은 디폴트 
+* 컨텐트팬 알아내기
+~~~~java
+public class MyFrame extends JFrame {
+MyFrame() {
+// 프레임의 컨텐트팬을 알아낸다.
+Container contentPane = getContentPane();
+}
+}
+~~~~
+* 컨텐트팬에 컴포넌트 붙이기
+~~~~java
+// 버튼 컴포넌트 생성
+JButton button = new JButton("Click");
+contentPane.add(button); // 컨텐트팬에 버튼 부착
+~~~~
+* 컨텐트팬 변경
+~~~~java
+class MyPanel extends JPanel {
+// JPanel을 상속받은 패널을 구현한다.
+}
+// frame의 컨텐트팬을 MyPanel 객체로 변경
+frame.setContentPane(new MyPanel());
+~~~~
+
+#### Tip. 컨텐트팬에 대한 JDK 1.5 이후의 추가 사항
+#### JDK 1.5 이전
+* 프레임의 컨텐트팬을 알아내어, 반드시 컨텐트팬에 컴포넌트 부착
+~~~~java 
+Container c = frame.getContentPane();
+c.add(new JButton("Click")); // 컨텐트팬에 직접 컴포넌트 부착
+~~~~
+#### JDK 1.5 이후 추가된 사항
+* 프레임에 컴포넌트를 부착하면 프레임이 대신 컨텐트팬에 부착
+~~~~java
+frame.add(new JButton("Click"));
+// 프레임의 버튼 컴포넌트를 컨텐트팬에 대신 부착
+~~~~
+#### 저자의 결론
+* JDK1.5이전처럼 직접 컨텐트팬에 컴포넌트를 부착하는 것이 바람직함
+* 컨텐트팬 다루기 능력 필요하기 때문
+* 컴포넌트를 부착할 경우 프레임이 아닌, 컨텐트팬임을 알고 명확히 사용할 필요
+
+#### 1.5 이후 추가된 기능을 사용하는 것이 가독성이 좋으며, Content Pane을 다루는 능력이 반드시 필요한 것은 아닙니다.
+
+#### 3개의 버튼 컴포넌트를 가진 스윙 프레임 만들기 
+~~~~java
+import javax.swing.*;
+import java.awt.*;
+
+public class Ex8_2ContentPaneEx extends JFrame {
+    public Ex8_2ContentPaneEx() {
+        setTitle("ContentPane과 JFrame"); // 프레임의 타이틀 바 설정
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Container contentPane = getContentPane(); // 컨텐트팬 알아내기
+        contentPane.setBackground(Color.ORANGE); // 오렌지색 배경 설정
+        contentPane.setLayout(new FlowLayout()); // FlowLayout 배치관리자 설정
+
+        contentPane.add(new JButton("OK"));      // OK 버튼 부착
+        contentPane.add(new JButton("Cancel"));  // Cancel 버튼 부착
+        contentPane.add(new JButton("Ignore"));  // Ignore 버튼 부착
+
+        setSize(300, 150); // 프레임 크기 300x150 설정
+        setVisible(true);  // 프레임을 화면에 출력
+    }
+
+    public static void main(String[] args) {
+        new Ex8_2ContentPaneEx();
+    }
+}
+~~~~
+
+### Swing 응용프로그램의 종료
+* 응용프로그램 내에서 스스로 종료하는 방법
+* 언제 어디서나 무조건 종료
+~~~~java
+System.exit(0);
+~~~~
+#### 프레임의 오른쪽 상단의 종료버튼(X)이 클릭되면 어떤 일이 일어나는가?
+* 프레임 종료, 프레임 윈도우를 닫음 : 프레임이 화면에서 보이지 않게 됨
+
+#### 프레임이 보이지 않게 되지만 응용프로그램이 종료한 것 아님
+* 키보드나 마우스 입력을 받지 못함
+* 다시 setVisible(true)를 호출하면, 보이게 되고 이전 처럼 작동함
+
+* 프레임 종료버튼이 클릭될 때, 프레임과 함께 프로그램을 종료 시키는 방법
+~~~~java
+frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+~~~~
+
+#### 컨테이너와 배치, 배치관리자 개념
+* 컨테이너마다 하나의 배치관리자 존재
+* 컨테이너에 부착되는 컴포넌트의 위치와 크기 결정
+* 컨테이너의 크기가 변경되면, 컴포넌트의 위치와 크기 재결정
+
+
+### 배치 관리자 대표 유형 4 가지
+#### FlowLayout 배치관리자
+* 컴포넌트가 삽입되는 순서대로 왼쪽에서 오른쪽으로 배치
+* 배치할 공간이 없으면 아래로 내려와서 반복한다.
+
+#### BorderLayout 배치관리자
+* 컨테이너의 공간을 동(EAST), 서(WEST), 남(SOUTH), 북(NORTH), 중앙(CENTER)의 5개 영역으로 나눔
+* 5개 영역 중 응용프로그램에서 지정한 영역에 컴포넌트 배치
+
+#### GridLayout 배치관리자
+* 컨테이너를 프로그램에서 설정한 동일한 크기의 2차원 격자로 나눔
+* 컴포넌트는 삽입 순서대로 좌에서 우로, 다시 위에서 아래로 배치
+
+#### CardLayout
+* 컨테이너의 공간에 카드를 쌓아 놓은 듯이 컴포넌트를 포개어 배치
+
+
+#### 컨테이너와 디폴트 배치관리자
+* 컨테이너의 디폴트 배치관리자 : 컨테이너 생성시 자동으로 생성되는 배치관리자
+
+
+### 컨테이너에 새로운 배치관리자 설정
+#### 컨테이너에 새로운 배치관리자 설정
+* setLayout(LayoutManager lm) 메소드 호출 : lm을 새로운 배치관리자로 설정
+
+#### [사례]
+* JPanel 컨테이너에 BorderLayout 배치관리자를 설정하는 예
+
+~~~~java
+JPanel p = new JPanel();
+p.setLayout(new BorderLayout()); // JPanel에 BorderLayout 설정
+~~~~
+#### 컨텐트팬의 배치관리자를 FlowLayout 배치관리자로 설정
+~~~~java
+Container c = frame.getContentPane(); // 프레임의 컨텐트팬 알아내기
+c.setLayout(new FlowLayout()); // 컨텐트팬에 FlowLayout 설정
+~~~~
+#### 오류
+~~~~java
+c.setLayout(FlowLayout); // 오류
+~~~~
+
+### FlowLayout 배치관리자
+#### 배치방법 
+* 컴포넌트를 컨테이너 내에 왼쪽에서 오른쪽으로 배치
+* 다시 위에서 아래로 순서대로 배치
+~~~~java
+container.setLayout(new FlowLayout());
+container.add(new JButton("add"));
+container.add(new JButton("sub"));
+container.add(new JButton("mul"));
+container.add(new JButton("div"));
+container.add(new JButton("Calculate"));
+~~~~
+### FlowLayout의 생성자
+#### 생성자 :
+* FlowLayout()
+* FlowLayout(int align, int hGap, int vGap)
+
+* align : 컴포넌트를 정렬하는 방법 지정. 왼쪽 정렬(FlowLayout.LEFT), 오른쪽 정렬(FlowLayout.RIGHT), 중앙 정렬(FlowLayout.CENTER(디폴트))
+
+* hGap : 좌우 두 컴포넌트 사이의 수평 간격, 픽셀 단위. 디폴트는 5
+
+* vGap : 상하 두 컴포넌트 사이의 수직 간격, 픽셀 단위. 디폴트는 5
+
+~~~~java
+import javax.swing.*;
+import java.awt.*;
+
+public class Ex83FlowLayoutEx extends JFrame {
+    public Ex83FlowLayoutEx() {
+        setTitle("FlowLayout 예제");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Container contentPane = getContentPane(); // 컨텐트팬 알아내기
+
+        // 왼쪽 정렬, 수평 간격을 30, 수직 간격을 40 픽셀로 배치하는 FlowLayout 생성
+        contentPane.setLayout(new FlowLayout(FlowLayout.LEFT, 30, 40));
+
+        contentPane.add(new JButton("add"));
+        contentPane.add(new JButton("sub"));
+        contentPane.add(new JButton("mul"));
+        contentPane.add(new JButton("div"));
+        contentPane.add(new JButton("Calculate"));
+
+        setSize(300, 200); // 프레임 크기 300x200 설정
+        setVisible(true);  // 화면에 프레임 출력
+    }
+
+    public static void main(String[] args) {
+        new Ex83FlowLayoutEx();
+    }
+}
+~~~~
+
+### BorderLayout 배치관리자
+### 배치방법
+* 컨테이너 공간을 5 구역으로 분할, 배치 : 동, 서, 남, 북, 중앙
+
+#### 배치 방법
+* add(Component comp, int index) : comp를 index의 공간에 배치
+~~~~java
+container.setLayout(new BorderLayout());
+container.add(new JButton("div"), BorderLayout.WEST);
+container.add(new JButton("Calculate"), BorderLayout.CENTER);
+~~~~
+
+#### BorderLayout 생성자와 add() 메소드
+### 생성자
+* BorderLayout()
+* BorderLayout(int hGap, int vGap)
+
+* hGap : 좌우 두 컴포넌트 사이의 수평 간격, 픽셀 단위(디폴트 : 0)
+
+* vGap : 상하 두 컴포넌트 사이의 수직 간격, 픽셀 단위(디폴트 : 0)
+
+#### add() 메소드
+* void add(Component comp, int index)
+* comp 컴포넌트를 index 위치에 삽입한다.
+* index : 컴포넌트의 위치
+
+* 동 : BorderLayout.EAST
+
+* 서 : BorderLayout.WEST
+
+* 남 : BorderLayout.SOUTH
+
+* 북 : BorderLayout.NORTH
+
+* 중앙 : BorderLayout.CENTER
+
+
+#### GridLayout 배치관리자
+### 배치방법
+* 컨테이너 공간을 동일한 사각형 격자(그리드)로 분할하고 각 셀에 컴포넌트 하나씩 배치
+* 생성자에 행수와 열수 지정
+* 셀의 왼쪽에서 오른쪽으로, 다시 위에서 아래로 순서대로 배치
+
+~~~~java
+container.setLayout(new GridLayout(4,3,5,5)); // 4×3 분할로 컴포넌트 배치
+container.add(new JButton("1"));   // 상단 왼쪽 첫 번째 셀에 버튼 배치
+container.add(new JButton("2"));   // 그 옆 셀에 버튼 배치
+~~~~ 
+
+#### GridLayout 생성자
+### 생성자
+* GridLayout()
+* GridLayout(int rows, int cols)
+* GridLayout(int rows, int cols, int hGap, int vGap)
+
+#### rows : 격자의 행수 (디폴트 : 1)
+
+#### cols : 격자의 열수 (디폴트 : 1)
+
+#### hGap : 좌우 두 컴포넌트 사이의 수평 간격, 픽셀 단위(디폴트 : 0)
+
+#### vGap : 상하 두 컴포넌트 사이의 수직 간격, 픽셀 단위(디폴트 : 0)
+
+#### rows x cols 만큼의 셀을 가진 격자로 컨테이너 공간을 분할, 배치
+
+#### 배치관리자 없는 컨테이너
+### 배치관리자가 없는 컨테이너가 필요한 경우
+* 응용프로그램에서 직접 컴포넌트의 크기와 위치를 결정하고자 하는 경우
+1. 컴포넌트의 크기나 위치를 개발자 임의로 결정하고자 하는 경우
+2. 게임 프로그램과 같이 시간이나 마우스/키보드의 입력에 따라 컴포넌트들의 위치와 크기가 수시로 변하는 경우
+3. 여러 컴포넌트들이 서로 겹쳐 출력하고자 하는 경우
+
+#### 컨테이너의 배치 관리자 제거 방법
+* container.setLayout(null);
+~~~~java
+JPanel p = new JPanel();
+p.setLayout(null); // JPanel의 배치관리자 삭제
+~~~~
+* 컨테이너의 배치관리자가 없어진면, 컴포넌트에 대한 어떤 배치도 없음
+
+* 추가된 컴포넌트의 크기가 0으로 설정, 위치는 예측할 수 없게 됨
+
+~~~~java
+// 패널 p에는 배치 관리자가 없는 패널에 컴포넌트를 여러 개 두면 버튼은 배치되지 않는다.
+p.add(new JButton("me")); 
+p.add(new JButton("me")); 
+~~~~
+
+### 컴포넌트의 절대 위치와 크기 설정
+#### 배치관리자가 없는 컨테이너에 컴포넌트를 삽입할 때
+* 프로그램에서 컴포넌트의 절대 크기와 위치 설정
+* 컴포넌트들이 서로 겹치게 할 수 있음
+
+#### 컴포넌트의 크기와 위치 설정 메소드
+* void setSize(int width, int height) // 컴포넌트 크기 설정
+* void setLocation(int x, int y) // 컴포넌트 위치 설정
+* void setBounds(int x, int y, int width, int height) // 위치와 크기 동시 설정
+
+#### 예 버튼을 100×40 크기로 하고, JPanel의 (50, 50) 위치에 배치
+~~~~ java
+JPanel p = new JPanel();
+p.setLayout(null); // 패널의 배치관리자 제거
+
+JButton clickButton = new JButton("Click");
+clickButton.setSize(100, 40); // 버튼 크기를 100×40으로 지정
+clickButton.setLocation(50, 50); // 버튼 위치를 (50, 50)으로 지정
+p.add(clickButton); // 패널 내 (50, 50)에 100×40 크기의 버튼 출력
+~~~~
+
+#### 예제 8-6 : 배치관리자 없는 컨테이너에 컴포넌트를 절대 위치와 절대 크기로 지정
+~~~~java
+import javax.swing.*;
+import java.awt.*;
+
+public class Ex86NullContainerEx extends JFrame {
+    public Ex86NullContainerEx() {
+        setTitle("배치관리자 없이 절대 위치에 배치하는 예제");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Container contentPane = getContentPane();
+        contentPane.setLayout(null); // 컨텐트팬에 배치관리자 제거
+
+        JLabel la = new JLabel("Hello, Press Buttons!");
+        la.setLocation(130, 50); // la를 (130, 50)에 위치시킴
+        la.setSize(200, 20); // 크기를 200x20으로 지정
+        contentPane.add(la);
+
+        for(int i = 1; i <= 9; i++) {
+            JButton b = new JButton(Integer.toString(i)); // 버튼 생성
+            b.setLocation(i*15, i*15); // 버튼 위치 지정
+            b.setSize(50, 20); // 버튼 크기 50x20
+            contentPane.add(b);
+        }
+
+        setSize(300, 200);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new Ex86NullContainerEx();
+    }
+}
+~~~~
+
+## 09장 자바의 이벤트 처리 
+
+### 이벤트 기반 프로그래밍
+#### 이벤트 기반 프로그래밍(Event Driven Programming)
+* 이벤트의 발생에 의해 프로그램 흐름이 결정되는 방식
+* 이벤트가 발생하면 이벤트를 처리하는 루틴(이벤트 리스너) 실행
+* 실행될 코드는 이벤트의 발생에 의해 전적으로 결정
+
+#### 반대되는 개념 : 배치 실행(batch programming)
+* 프로그램 개발자가 프로그램의 흐름을 결정하는 방식
+
+#### 이벤트 종류
+* 사용자의 입력 : 마우스 드래그, 마우스 클릭, 키보드 누름 등
+* 센서로부터의 입력, 네트워크로부터 데이터 송수신
+* 다른 응용프로그램이나 다른 스레드로부터의 메시지
+
+#### 이벤트 기반 응용 프로그램의 구조
+* 각 이벤트마다 처리하는 리스너 코드 보유
+
+#### GUI 응용프로그램은 이벤트 기반 프로그래밍으로 작성됨
+* GUI 라이브러리 종류 : C++의 MFC, C# GUI, Visual Basic, X Window, Android 등
+* 자바의 AWT와 Swing
+
+#### 자바 스윙 프로그램에서 이벤트 처리 과정
+1. 이벤트 발생
+* 예 : 마우스의 움직임 혹은 키보드입력
+2. 이벤트 객체 생성
+* 현재 발생한 이벤트에 대한 정보를 가진 객체
+3. 응용프로그램에 작성된 이벤트 리스너 찾기
+4. 이벤트 리스너 실행
+* 리스너에 이벤트 객체 전달
+* 리스너 코드 실행
+
+### 이벤트 객체
+#### 이벤트 객체
+* 발생한 이벤트에 관한 정보를 가진 객체
+* 이벤트 리스너에 전달됨 : 이벤트 리스너 코드가
+발생한 이벤트에 대한 상황을 파악할 수 있게 함
+
+#### 이벤트 객체가 포함하는 정보
+* 이벤트 종류와 이벤트 소스
+* 이벤트가 발생한 화면 좌표 및 컴포넌트 내 좌표
+* 이벤트가 발생한 버튼이나 메뉴 아이템의 문자열
+* 클릭된 마우스 버튼 번호 및 마우스의 클릭 횟수
+* 키의 코드 값과 문자 값
+* 체크박스, 라디오버튼 등과 같은 컴포넌트에
+이벤트가 발생하였다면 체크 상태
+
+#### 이벤트 소스를 알아 내는 메소드 : Object getSource()
+* 발생한 이벤트의 소스 컴포넌트 리턴
+* Object 타입으로 리턴하므로 캐스팅하여 사용
+* 모든 이벤트 객체에 대해 적용
+
+### 리스너 인터페이스
+* 이벤트 리스너 : 이벤트를 처리하는 자바 프로그램 코드, 클래스로 작성
+* 자바는 다양한 리스너 인터페이스 제공
+
+#### 예 ActionListener 인터페이스 – 버튼 클릭 이벤트를 처리하기 위한 인터페이스
+~~~~java
+interface ActionListener { // 아래 메소드를 개발자가 구현해야 함
+    public void actionPerformed(ActionEvent o); // Action 이벤트 발생시 호출됨
+}
+~~~~
+#### 예 MouseListener 인터페이스 – 마우스 조작에 따른 이벤트를 처리하기 위한 인터페이스
+~~~~java
+interface MouseListener { // 아래의 5개 메소드를 개발자가 구현해야 함
+    public void mousePressed(MouseEvent e); // 마우스 버튼이 눌러지는 순간 호출
+    public void mouseReleased(MouseEvent e); // 눌러졌던 마우스 버튼이 떼어지는 순간 호출
+    public void mouseClicked(MouseEvent e); // 마우스 버튼이 눌렸다가 떼어지는 순간 호출
+    public void mouseEntered(MouseEvent e); // 마우스가 컴포넌트 위에 올라가는 순간 호출
+    public void mouseExited(MouseEvent e); // 마우스가 컴포넌트 위에서 나가는 순간 호출
+}
+~~~~
+#### 사용자의 이벤트 리스너 작성
+* 자바의 리스너 인터페이스(interface)를 상속받아 구현
+* 리스너 인터페이스의 모든 추상 메소드 구현
+
+
+### 이벤트 리스너 작성 과정 사례
+1. 이벤트와 이벤트 리스너 선택
+* 버튼 클릭을 처리하고자 하는 경우
+* ㆍ이벤트 : Action 이벤트, 이벤트 리스너 : ActionListener
+2. 이벤트 리스너 클래스 작성 : ActionListener 인터페이스 구현
+~~~~java
+class MyActionListener implements ActionListener {
+    public void actionPerformed(ActionEvent e) { // 버튼이 클릭될 때 호출되는 메소드
+        JButton b = (JButton)e.getSource();     // 사용자가 클릭한 버튼 알아내기
+        if(b.getText().equals("Action"))        // 버튼의 문자열이 "Action"인지 비교
+            b.setText("액션");                  // JButton의 setText() 호출, 문자열 변경
+        else
+            b.setText("Action");                // JButton의 setText() 호출, 문자열 변경
+    }
+}
+~~~~
+3. 이벤트 리스너 등록
+* 이벤트를 받아 처리하고자 하는 컴포넌트에 이벤트 리스너 등록
+* component.addXXXListener(listener)
+* ㆍxxx : 이벤트 명, listener : 이벤트 리스너 객체
+~~~~java
+MyActionListener listener = new MyActionListener(); // 리스너 인스턴스 생성
+btn.addActionListener(listener);                    // 리스너 등록
+~~~~
+
+### 이벤트 리스너 작성 방법
+#### [ 3 가지 방법 ]
+
+#### 독립 클래스로 작성
+* 이벤트 리스너를 완전한 클래스로 작성
+* 이벤트 리스너를 여러 곳에서 사용할 때 적합
+
+#### 내부 클래스(inner class)로 작성
+* 클래스 안에 멤버처럼 클래스 작성
+* 이벤트 리스너를 특정 클래스에서만 사용할 때 적합
+
+#### 익명 클래스(anonymous class)로 작성
+* 클래스의 이름 없이 간단히 리스너 작성
+* 클래스 조차 만들 필요 없이 리스너 코드가 간단한 경우에 적합
+
+
+
 ## 05월 22일 (11주차) 
 #### README 파일 편집
 
