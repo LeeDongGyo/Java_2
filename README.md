@@ -1,5 +1,545 @@
 # 이동교 202230124
 
+## 06월 05일 (13주차) 
+#### README 파일 편집
+### 이벤트 리스너 작성 방법
+#### 3가지 
+#### 독립 클래스로 작성
+* 이벤트 리스너를 완전한 클래스로 작성
+* 이번트 리스너를 여러 곳에서 사용할 떄 적합 
+
+#### 내부 클래스로 작성
+* 클래스 안에 멤버처럼 클래스작성 
+이번트 리스너를 특정 클래스에서만 사용할 떄 적합
+
+#### 익명 클래스로 적합
+* 클래스의 이름 없이 간단한 리스너 작성
+* 클래스 조차 만들 필요 없이 리스너 코드가 간단한 경우에 적합 
+
+### 예제 9-1 : 독립 클래스로 Action 이벤트 리스너 만들기 
+~~~~java
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class INdepClassListener extends JFrame {
+    public IndepClassListener() {
+        setTitle("Action 이벤트 리스너 예제");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Container c = getContentPane();
+        c.setLayout(new FlowLayout());
+        JButton btn = new JButton("Action");
+        btn.addActionListener(new Ex9MyActionListener());
+        c.add(btn);
+        setSize(250, 120);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new IndepClassListener();
+    }
+}
+
+// 독립된 클래스로 이벤트 리스너를 작성한다.
+class Ex9MyActionListener implements ActionListener {
+    public void actionPerformed(ActionEvent e) {
+        JButton b = (JButton)e.getSource();
+        if(b.getText().equals("Action"))
+            b.setText("액션");
+        else
+            b.setText("Action");
+    }
+}
+~~~~
+
+### INdepClassListener2
+~~~~java
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class INdepClassListener2 extends JFrame {
+    public INdepClassListener2() {
+        setTitle("Action 이벤트 리스너 예제");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Container c = getContentPane();
+        c.setLayout(new FlowLayout());
+        JButton btn = new JButton("Action");
+        btn.addActionListener(new Ex9MyActionListener());
+        c.add(btn);
+        setSize(250, 120);
+        setVisible(true);
+    }
+
+    // 내부 클래스로 Action 리스너를 작성한다.
+    private class Ex9MyActionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JButton b = (JButton) e.getSource();
+            if (b.getText().equals("Action"))
+                b.setText("액션");
+            else
+                b.setText("Action");
+            // InnerClassListener나 JFrame의 멤버 호출 가능
+            // setTitle(b.getText()); // 프레임 타이틀에 버튼문자열 출력
+        }
+    }
+
+    public static void main(String[] args) {
+        new INdepClassListener2();
+    }
+}
+~~~~
+
+### 익명 클래스로 이벤트 리스너 작성
+* 익명 클래스 : 이름 없는 클래스 (클래스 선언 + 인스턴스 생성)을 한번에 달성 
+
+* 간단한 리스너의 경우 익명 클래스 사용 추천
+* 메소드의 개수가 1,2개인 리스너에 대해 주로 사용
+
+
+### 예제 9-4 : 마우스 이벤트 리스너 작성 - 마우스로 문자열 이동시키기 
+
+~~~~java
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class Ex9_4MouseListenerEx extends JFrame {
+    private JLabel la = new JLabel("Hello");
+
+    public Ex9_4MouseListenerEx() {
+        setTitle("Mouse 이벤트 예제");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Container c = getContentPane();
+        c.setLayout(null);
+
+        la.setSize(50, 20);
+        la.setLocation(30, 30);
+        c.add(la);
+
+        c.addMouseListener(new MyMouseListener());
+
+        setSize(200, 200);
+        setVisible(true);
+    }
+
+    class MyMouseListener implements MouseListener {
+        public void mousePressed(MouseEvent e) {
+            int x = e.getX();
+            int y = e.getY();
+            la.setLocation(x, y);
+        }
+        public void mouseReleased(MouseEvent e) {
+
+        }
+        public void mouseClicked(MouseEvent e) {
+
+        }
+        public void mouseEntered(MouseEvent e) {
+
+        }
+        public void mouseExited(MouseEvent e) {
+
+        }
+    }
+
+    public static void main(String[] args) {
+        new Ex9_4MouseListenerEx();
+    }
+}
+~~~~
+
+### 어댑터 클래스
+#### 이벤트 리스너 구현에 따른 부담
+* 리스너의 추상 메서드를 모두 구현해야 하는 부담
+* 예 마우스 리스너에서 마우스가 눌러지는 경우(mousePressed())만 처리하고자 하는 경우에도 나머지 4개의 메서드를 모두 구현해야 하는 부담
+#### MouseAdapter 예
+~~~~java 
+class MouseAdapter implements MouseListener, MouseMotionListener, MouseWheelListener {
+public void mousePressed(MouseEvent e) {}
+public void mouseReleased(MouseEvent e) {}
+public void mouseClicked(MouseEvent e) {}
+public void mouseEntered(MouseEvent e) {}
+public void mouseExited(MouseEvent e) {}
+public void mouseMoved(MouseEvent e) {}
+public void mouseDragged(MouseEvent e) {}
+public void mouseWheelMoved(MouseWheelEvent e) {}
+}
+~~~~ 
+
+### 어댑터 클래스(Adapter)
+* 리스너의 모든 메서드를 단순 리턴하도록 만든 클래스(JDK에서 제공)
+
+* 추상 메소드가 하나뿐인 리스너는 어댑터 없음
+* ActionAdapter, ItemAdapter 클래스는 존재하지 않음
+
+
+### Key 이벤트와 포커스
+#### 키 입력시, 다음 세 경우 각각 Key 이벤트 발생
+* 키를 누르는 순산 
+* 누른 키를 떄는 순간
+* 누른 키를 떼는 순간 
+
+#### 카 아밴트를 받을 수 있는 조건
+* 모든 컴포넌트
+* 현재 포커스를 가진 컴포넌트가 키 이벤트 독점
+
+#### 포커스 
+* 컴포넌트나 응용프로그램이 키 이벤트를 독점하는 권한
+* 컴포넌트에 포커스 설정 방법 : 다음 2 라인 코드 필요 
+~~~~java
+ componet.sertFousable(ture);
+ componet.requestFousable();
+~~~~
+* 자바플랫폼마다 실행 환경의 초기화가 서로 다를 수 있기 떄문에 다음 코드가 필요하다 
+~~~~java
+componet.sertFousable(ture);
+~~~~
+
+### KeyListener 
+* 응용프로그램에서 KeyListener를 상속받아 키 리스너 구현
+
+#### KeyListener의 3개 메소드
+* 키 리스너(KeyListener)
+~~~~java
+void keyPressed(KeyEvent e) { // 이벤트 처리 루틴 
+}
+void keyReleased(KeyEvent e) { // 이벤트 처리 루틴 
+}
+void keyTyped(KeyEvent e) { // 이벤트 처리 루틴 
+}
+~~~~
+
+#### 컴포넌트에 키 이벤트 리스너 달기
+~~~~java
+component.addKeyListener(myKeyListener);
+~~~~
+
+### 유니코드(Unicode) 키
+#### 유니코드 키의 특징
+* 국제 산업 표준
+* 전 세계의 문자를 컴퓨터에서 일관되게 표현하기 위한 코드 체계
+* 문자들에 대해서만 키 코드 값 정의 : A-Z, a-z, 0-9, !, @, & 등
+
+#### 문자가 아닌 키 경우에는 표준화된 키 코드 값 없음
+* <Function> 키, <Home> 키, <Up> 키, <Delete> 키, <Control> 키, <Shift> 키, <Alt> 키, 등은 플랫폼에 따라 키 코드 값이 다를 수 있음
+
+#### 유니코드 키가 입력되는 경우
+* keyPressed(), keyTyped(), keyReleased() 가 순서대로 호출
+
+#### 유니코드 키가 아닌 경우
+* keyPressed(), keyReleased() 만 호출됨
+
+
+### 가상 키와 입력된 키 판별
+#### KeyEvent 객체
+* 입력된 키 정보를 가진 이벤트 객체
+* KeyEvent 객체의 메소드로 입력된 키 판별
+
+#### KeyEvent 객체의 메소드로 입력된 키 판별
+* char KeyEvent.getKeyChar()
+* 키의 유니코드 문자 값 리턴
+* Unicode 문자 키인 경우에만 의미 있음
+* 입력된 키를 판별하기 위해 문자 값과 비교하면 됨
+~~~~java
+public void keyPressed(KeyEvent e) {
+    if(e.getKeyChar() == 'q')
+        System.exit(0);
+}
+~~~~
+q 키가 누르면 프로그램 종료
+
+#### int KeyEvent.getKeyCode()
+* 유니코드 키 포함
+* 모든 키에 대한 정수형 키 코드 리턴
+* 입력된 키를 판별하기 위해 가상키(Virtual Key) 값과 비교해야 함
+* 가상 키 값은 KeyEvent 클래스에 상수로 선언
+~~~~java
+public void keyPressed(KeyEvent e) {
+    if(e.getKeyCode() == KeyEvent.VK_F5)
+        System.exit(0);
+}
+~~~~ 
+F5 키를 누르면 프로그램 종료
+
+
+### 예제 9-6 : KeyListeneer 활용 - 입력된 문자 키 판별 
+~~~~java
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class Ex9_6KeyCharEx extends JFrame {
+    private JLabel la = new JLabel("<Enter>키로 배경색이 바뀝니다.");
+
+    public Ex9_6KeyCharEx() {
+        super("KeyListener의 문자 키 입력 예제");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Container c = getContentPane(); // 컨텐트 팬 알아내기
+        c.setLayout(new FlowLayout());
+        c.add(la);
+        c.addKeyListener(new MyKeyListener()); // 키 리스너 달기
+        setSize(250, 150);
+        setVisible(true);
+
+        c.setFocusable(true); // 컨텐트팬이 포커스를 받을 수 있도록 설정
+        c.requestFocus();     // 컨텐트팬에 포커스 설정. 키 입력 가능해짐
+    }
+
+    class MyKeyListener extends KeyAdapter { // 키 리스너
+        public void keyPressed(KeyEvent e) {
+            int r = (int)(Math.random() * 256); // 0~255 사이의 임의의 red 색상
+            int g = (int)(Math.random() * 256); // 0~255 사이의 임의의 green 색상
+            int b = (int)(Math.random() * 256); // 0~255 사이의 임의의 blue 색상
+
+            switch (e.getKeyChar()) { // 입력된 키 문자
+                case '\n': // <Enter> 키 입력
+                    la.setText("r=" + r + ", g=" + g + ", b=" + b);
+                    getContentPane().setBackground(new Color(r, g, b)); // 컨텐트팬의 배경색 변경
+                    break;
+                case 'q': System.exit(0); // 프로그램 종료
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new Ex9_6KeyCharEx();
+    }
+}
+~~~~
+
+
+### 예제 9-7 : KeyListener 활용 - 상, 하, 좌, 우 키로 문자열 움직이기 
+~~~~java 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class Ex9_7FlyingTextEx extends JFrame {
+    private JPanel contentPane = new JPanel();
+    private JLabel la = new JLabel("HELLO");
+
+    public Ex9_7FlyingTextEx() {
+        super("상,하,좌,우 키를 이용하여 텍스트 움직이기");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Container c = getContentPane();
+        c.setLayout(null);
+        c.addKeyListener(new MyKeyListener());
+
+        la.setLocation(50, 50);
+        la.setSize(100, 20);
+        c.add(la);
+
+        setSize(200, 200);
+        setVisible(true);
+
+        c.setFocusable(true); // 컨텐트팬이 포커스를 받을 수 있도록 설정
+        c.requestFocus();     // 포커스 지정
+    }
+
+    class MyKeyListener extends KeyAdapter {
+        public void keyPressed(KeyEvent e) { // 입력된 키코드
+            int keyCode = e.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.VK_UP:
+                    la.setLocation(la.getX(), la.getY() - 10);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    la.setLocation(la.getX(), la.getY() + 10);
+                    break;
+                case KeyEvent.VK_LEFT:
+                    la.setLocation(la.getX() - 10, la.getY());
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    la.setLocation(la.getX() + 10, la.getY());
+                    break;
+            }
+        }
+    }
+}
+~~~~
+
+#### Mouse 이벤트와 MouseListener, MouseMotionListener
+### Mouse 이벤트 : 사용자의 마우스 조작에 따라 발생하는 이벤트
+* Mouse 이벤트가 발생하는 경우 리스너의 메소드	리스너
+* 마우스가 컴포넌트 위에 올라갈 때
+* 리스너의 메소드 void mouseEntered(MouseEvent e)	
+* 리스너 MouseListener
+
+* 마우스가 컴포넌트에서 내려올 때	
+* 리스너의 메소드 void mouseExited(MouseEvent e)	
+* 리스너 MouseListener
+
+* 마우스 버튼이 눌러졌을 때	
+* 리스너의 메소드 void mousePressed(MouseEvent e)	
+* 리스너 MouseListener
+
+* 눌러진 버튼이 떼어질 때	
+* 리스너의 메소드 void mouseReleased(MouseEvent e)
+* 리스너 MouseListener
+
+* 마우스로 컴포넌트를 클릭하였을 때
+* 리스너의 메소드 void mouseClicked(MouseEvent e)	
+* 리스너 MouseListener
+
+* 마우스가 드래그 되는 동안	
+리스너의 메소드 void mouseDragged(MouseEvent e)	
+* 리스너 MouseMotionListener
+
+* 마우스가 움직이는 동안	
+* 리스너의 메소드 void mouseMoved(MouseEvent e)	
+* 리스너 MouseMotionListener
+
+* mouseClicked() : 마우스가 눌려진 위치에서 그대로 떼어질 때 호출
+* mouseReleased() : 마우스가 눌려진 위치에서 그대로, 떼어지는
+아니든 항상 호출
+* mouseDragged() : 마우스가 드래그되는 동안 계속 여러번 호출
+
+#### 마우스가 눌려진 위치에서 떼어지는 경우 메소드 호출 순서
+~~~~java
+mousePressed(), mouseReleased(), mouseClicked()
+~~~~
+####  마우스가 드래그될 때 호출되는 메소드 호출 순서
+~~~~java
+mousePressed(), mouseDragged(), mouseDragged(), ..., mouseDragged(), mouseReleased()
+~~~~
+
+
+### 마우스 리스너 달기와 MouseEvent 객체 활용
+#### 마우스 리스너 달기
+* 마우스 리스너는 컴포넌트에 다음과 같이 등록
+~~~~java
+component.addMouseListener(myMouseListener);
+~~~~ 
+
+* 컴포넌트가 마우스 무브(mouseMoved())나 마우스 드래깅(mouseDragged())을 함께 처리하고자 하면, MouseMotion 리스너 따로 등록
+~~~~java
+component.addMouseMotionListener(myMouseMotionListener);
+~~~~
+
+#### MouseEvent 객체 활용
+* 마우스 포인터의 위치, 컴포넌트 내 상대 위치 : int getX(), int getY()
+~~~~java
+public void mousePressed(MouseEvent e) {
+    int x = e.getX();   // 마우스가 눌러진 x 좌표
+    int y = e.getY();   // 마우스가 눌러진 y 좌표
+}
+~~~~
+#### 마우스 클릭 횟수 : int getClickCount()
+~~~~java
+public void mouseClicked(MouseEvent e) {
+    if(e.getClickCount() == 2) {
+        // 더블클릭 처리 루틴
+    }
+}
+~~~~
+
+
+### 자바의 GUI 프로그래밍 방법
+#### [ 자바의 GUI 프로그래밍 방법 2 종류 ]
+#### 컴포넌트 기반 GUI 프로그래밍
+* 스윙 컴포넌트를 이용하여 쉽게 GUI를 구축
+* 자바에서 제공하는 컴포넌트의 한계를 벗어나지 못함
+
+#### 그래픽을 이용하여 GUI 구축
+* 그래픽 기반 GUI 프로그래밍
+* 개발자가 직접 그래픽으로 화면을 구성하는 부담
+* 독특한 GUI를 구성할 수 있는 장점
+* GUI 처리의 실행 속도가 빨라, 게임 등에 주로 이용
+
+
+### 스윙 컴포넌트의 공통 메소드, JComponent의 메소드
+#### JComponent
+* 스윙 컴포넌트의 멤버를 모두 상속받는 슈퍼 클래스, 추상 클래스
+* 스윙 컴포넌트들이 상속받는 공통 메소드와 상수 구현
+* JComponent의 주요 메소드 사례
+
+#### 컴포넌트의 모양과 관련된 메소드
+~~~~java
+void setForeground(Color) : 전경색 설정
+void setBackground(Color) : 배경색 설정
+void setOpaque(boolean) : 불투명성 설정
+void setFont(Font) : 폰트 설정
+Font getFont() : 폰트 리턴
+~~~~
+
+#### 컴포넌트의 상태와 관련된 메소드
+~~~~java
+void setEnabled(boolean) : 컴포넌트 활성화/비활성화
+void setVisible(boolean) : 컴포넌트 보이기/숨기기
+boolean isVisible() : 컴포넌트의 보이는 상태 리턴
+~~~~
+
+#### 컴포넌트의 위치와 크기에 관련된 메소드
+~~~~java
+int getWidth() : 폭 리턴
+int getHeight() : 높이 리턴
+int getX() : x 좌표 리턴
+int getY() : y 좌표 리턴
+Point getLocationOnScreen() : 스크린 좌표상에서의 컴포넌트 좌표
+void setLocation(int, int) : 위치 지정
+void setSize(int, int) : 크기 지정
+~~~~
+
+#### 컨테이너를 위한 메소드
+~~~~java
+Component add(Component) : 자식 컴포넌트 추가
+void remove(Component) : 자식 컴포넌트 제거
+void removeAll() : 모든 자식 컴포넌트 제거
+Component[] getComponents() : 자식 컴포넌트 배열 리턴
+Container getParent() : 부모 컨테이너 리턴
+Container getTopLevelAncestor() : 최상위 부모 컨테이너 리턴
+~~~~
+
+
+### 다른 컴포넌트의 메소드
+#### 앞서 살펴본 바와 같이 JComponent의 메소드를 상속 받기 때문에 이 장에서 설명하는 컴포넌트의 사용법의 거의 동일합니다.
+
+#### 다음 예를 비교해 보면 알 수 있듯이 JButton, JCheckBox, JRadioButton, JTextField, JTextArea, JList, JComboBox 모두 사용하는 메소드는 JLabel과 유사합니다.
+
+#### 사용하고 싶은 컴포넌트를 골라 예제 10-1을 참고하여 코드를 작성하면 됩니다.
+~~~~java
+JLabel(이미지 레이블)
+JLabel(Icon image) 이미지 레이블
+JLabel(String text) 문자열 레이블
+JLabel(String text, Icon image, int hAlign) 문자열과 이미지 모두 가진 레이블
+hAlign: 수평 정렬값. SwingConstants.LEFT, SwingConstants.RIGHT, SwingConstants.CENTER 중 하나
+~~~~
+~~~~java
+JButton(버튼)
+JButton(Icon image) 이미지 버튼
+JButton(String text) 문자열 버튼
+JButton(String text, Icon image) 문자열과 이미지 모두 가진 버튼
+~~~~ 
+~~~~java
+JCheckBox(체크박스)
+JCheckBox() 빈 체크박스
+JCheckBox(String text) 문자열 체크박스
+JCheckBox(String text, boolean selected) 문자열 체크박스, 선택 여부 지정
+JCheckBox(Icon image) 이미지 체크박스
+JCheckBox(Icon image, boolean selected) 이미지 체크박스, 선택 여부 지정
+JCheckBox(String text, Icon image) 문자열과 이미지 모두 가진 체크박스
+JCheckBox(String text, Icon image, boolean selected) 문자열과 이미지 모두 가진 체크박스, 선택 여부 지정
+~~~~
+
+### 나머지 챕터의 내용 정리
+
+#### 나머지 4개의 챕터의 내용은 다음과 같습니다. 필요에 따라서 선택적으로 학습하면 됩니다.
+
+#### 11장 그래픽 : paintComponent() 활용하여 app에 직접 그림을 그리는 방법
+
+#### 12장 자바 스레드 기초 : 멀티 태스킹과 스레드의 개념
+
+#### 13장 입력과 스트림과 파일 입력 : 자바의 입력과 스트림, 텍스트와 바이너리 File 입출력
+
+#### 14장 자바 소켓 프로그래밍 : 소켓 통신에 대한 이해. 인터넷 통신.
+
+# 복습이 필요하다면 4장 클래스와 객체, 5장 상속, 8장 자바 GUI 스윙 기초, 9장 자바의 이벤트 처리를 다시 한번 학습하세요.
+
+
+
+
 ## 05월 29일 (12주차) 
 #### README 파일 편집
 
